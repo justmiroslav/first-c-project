@@ -22,9 +22,39 @@ void new_line() {
     text[text_len] = '\0';
 }
 
+void save_text(char *filename) {
+    FILE *file = fopen(filename, "w");
+    if (file != NULL) {
+        fputs(text, file);
+        fclose(file);
+        printf("Text has been saved successfully\n");
+    } else {
+        printf("Error opening file for saving\n");
+    }
+}
+
+void load_text(char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file != NULL) {
+        char line[100];
+        while (fgets(line, sizeof(line), file) != NULL) {
+            printf("%s", line);
+        }
+        printf("\n");
+        fclose(file);
+    } else {
+        printf("Error opening file for loading\n");
+    }
+}
+
+void print_text() {
+    printf("%s\n", text);
+}
+
 int main() {
     int command;
     char input[100];
+    char filename[100];
     while (true) {
         printf("Enter the command!\n");
         scanf("%d", &command);
@@ -32,15 +62,22 @@ int main() {
             printf("Enter text to append:\n");
             scanf(" %[^\n]", input);
             append_text(input);
-        }
-        else if (command == 2) {
+        } else if (command == 2) {
             new_line();
             printf("New line is started\n");
-        }
-        else if (command == 8) {
+        } else if (command == 3) {
+            printf("Enter the file name for saving:\n");
+            scanf(" %[^\n]", filename);
+            save_text(filename);
+        } else if (command == 4) {
+            printf("Enter the file name for loading:\n");
+            scanf(" %[^\n]", filename);
+            load_text(filename);
+        } else if (command == 5) {
+            print_text();
+        } else if (command == 8) {
             break;
-        }
-        else {
+        } else {
             printf("Incorrect command. Enter a valid command.\n");
         }
     }
