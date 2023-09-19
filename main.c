@@ -85,6 +85,37 @@ void insert_text(int line, int index, char *new_text) {
     text_len += new_len;
 }
 
+void search_text(char *search_text) {
+    int search_len = strlen(search_text);
+    int current_line = 0;
+    int idx = 0;
+    bool correct_word = false;
+    for (int i = 0; i < text_len; i++) {
+        if (text[i] == '\n') {
+            current_line++;
+            idx = 0;
+        } else {
+            bool found = true;
+            for (int j = 0; j < search_len; j++) {
+                if (text[i + j] != search_text[j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                printf("Text is present in this position: %d %d\n", current_line, idx);
+                correct_word = true;
+            }
+        }
+        if (text[i] != '\n') {
+            idx++;
+        }
+    }
+    if (!correct_word) {
+        printf("Text not found.\n");
+    }
+}
+
 int main() {
     int command, line, index;
     char input[100];
@@ -115,6 +146,10 @@ int main() {
             printf("Enter text to insert:\n");
             scanf(" %[^\n]", input);
             insert_text(line, index, input);
+        } else if (command == 7) {
+            printf("Enter text to search:\n");
+            scanf(" %[^\n]", input);
+            search_text(input);
         } else if (command == 8) {
             break;
         } else {
